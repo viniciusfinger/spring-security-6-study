@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.viniciusfinger</groupId>
-	<artifactId>springsecuritybasic</artifactId>
+	<artifactId>basic-auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springsecuritybasic</name>
 	<description>Basic security application</description>
