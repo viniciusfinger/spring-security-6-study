@@ -1,4 +1,4 @@
-package com.viniciusfinger.springsecuritybasic;
+package com.viniciusfinger.eazybank;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
