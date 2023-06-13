@@ -12,6 +12,11 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        //http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll()); Negar todas requisições
+        //http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); Permitir todas requisições
+
+
         return http.authorizeHttpRequests((requests) ->
                 requests
                         .requestMatchers("/accounts/**", "balances/**", "/loans/**", "/cards/**").authenticated()
