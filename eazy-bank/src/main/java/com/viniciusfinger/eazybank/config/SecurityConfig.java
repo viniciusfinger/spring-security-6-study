@@ -5,8 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -30,20 +36,26 @@ public class SecurityConfig {
                 .build();
     }
 
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsManger(){
+//        UserDetails userAdmin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("admin")
+//                .authorities("admin")
+//                .build();
+//
+//        UserDetails userFinger = User.withDefaultPasswordEncoder()
+//                .username("finger")
+//                .password("123456")
+//                .authorities("read")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(userAdmin, userFinger);
+//    }
+
     @Bean
-    public InMemoryUserDetailsManager userDetailsManger(){
-        UserDetails userAdmin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin")
-                .authorities("admin")
-                .build();
-
-        UserDetails userFinger = User.withDefaultPasswordEncoder()
-                .username("finger")
-                .password("123456")
-                .authorities("read")
-                .build();
-
-        return new InMemoryUserDetailsManager(userAdmin, userFinger);
+    public UserDetailsService userDetailsManager(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
     }
+
 }
