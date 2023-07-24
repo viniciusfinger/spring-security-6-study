@@ -36,26 +36,16 @@ public class SecurityConfig {
                 .build();
     }
 
+
+    //Spring standard JDBC Authentication
 //    @Bean
-//    public InMemoryUserDetailsManager userDetailsManger(){
-//        UserDetails userAdmin = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin")
-//                .authorities("admin")
-//                .build();
-//
-//        UserDetails userFinger = User.withDefaultPasswordEncoder()
-//                .username("finger")
-//                .password("123456")
-//                .authorities("read")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(userAdmin, userFinger);
+//    public UserDetailsService userDetailsManager(DataSource dataSource){
+//        return new JdbcUserDetailsManager(dataSource);
 //    }
 
     @Bean
-    public UserDetailsService userDetailsManager(DataSource dataSource){
-        return new JdbcUserDetailsManager(dataSource);
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
 }
