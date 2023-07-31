@@ -3,8 +3,12 @@ package com.viniciusfinger.eazybank.model;
 import java.sql.Date;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "notice_details")
 public class Notice {
