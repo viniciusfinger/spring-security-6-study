@@ -13,7 +13,7 @@ public class Notice {
     @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
     @GenericGenerator(name = "native")
     @Column(name = "notice_id")
-    private int noticeId;
+    private Integer noticeId;
 
     @Column(name = "notice_summary")
     private String noticeSummary;

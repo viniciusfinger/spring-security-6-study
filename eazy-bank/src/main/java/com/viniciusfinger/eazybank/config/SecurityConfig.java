@@ -19,14 +19,10 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        //http.authorizeHttpRequests((requests) -> requests.anyRequest().denyAll()); Negar todas requisições
-        //http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll()); Permitir todas requisições
-
-
         return http.authorizeHttpRequests(requests ->
                 requests
-                        .requestMatchers("/notices/**", "/contacts/**", "/customers/**").permitAll()
-                        .requestMatchers("/accounts/**", "/balances/**", "/loans/**", "/cards/**").authenticated()
+                        .requestMatchers("/notices/**", "/contacts/**", "/auth/**").permitAll()
+                        .requestMatchers("/accounts/**", "/balances/**", "/loans/**", "/cards/**", "/users/**").authenticated()
                 )
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults())
@@ -34,7 +30,7 @@ public class SecurityConfig {
                 .build();
     }
 
-    //Spring standard JDBC Authentication
+    //Spring standard JDBC user details
 //    @Bean
 //    public UserDetailsService userDetailsManager(DataSource dataSource){
 //        return new JdbcUserDetailsManager(dataSource);

@@ -1,15 +1,22 @@
 package com.viniciusfinger.eazybank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+
+@Getter
+@Setter
 @Entity
 public class Customer {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
-    @GenericGenerator(name = "native",strategy = "native")
+    @GenericGenerator(name = "native")
     @Column(name = "customer_id")
     private int id;
 
@@ -26,5 +33,5 @@ public class Customer {
     private String role;
 
     @Column(name = "create_dt")
-    private String createDt;
+    private Date createDt;
 }
