@@ -1,5 +1,6 @@
 package com.viniciusfinger.eazybank.config;
 
+import com.viniciusfinger.eazybank.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,9 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,6 +29,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        CsrfTokenRequestAttributeHandler csrfRequestHandler = new CsrfTokenRequestAttributeHandler();
+        csrfRequestHandler.setCsrfRequestAttributeName("_csrf");
+
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
@@ -35,7 +43,13 @@ public class SecurityConfig {
                     config.setMaxAge(3600L); //24h
                     return config;
                 }))
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> {
+                    csrf
+                            .csrfTokenRequestHandler(csrfRequestHandler)
+                            .ignoringRequestMatchers("/contacts/**", "/auth/**") //ignore csrf protection for this public paths that contains PUT/POST methods
+                            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                })
+                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class) //adicionando o filtro que adiciona o cabeçalho do csrf token
                 .authorizeHttpRequests(requests ->
                 requests
                         .requestMatchers("/notices/**", "/contacts/**", "/auth/**").permitAll()
