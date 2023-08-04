@@ -35,8 +35,8 @@ public class SecurityConfig {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
                     config.setAllowedMethods(Arrays.asList("*"));
-                    config.setAllowCredentials(true);
                     config.setAllowedHeaders(Arrays.asList("*"));
+                    config.setAllowCredentials(true);
                     config.setMaxAge(3600L); //24h
                     return config;
                 }))
@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class) //adicionando o filtro que adiciona o cabeçalho do csrf token
                 .authorizeHttpRequests(requests ->
                 requests
-                        .requestMatchers("/notices/**", "/contacts/**", "/auth/**").permitAll()
+                        .requestMatchers("/notices/**", "/contacts/**", "/auth").permitAll()
                         .requestMatchers("/accounts/**", "/balances/**", "/loans/**", "/cards/**", "/users/**").authenticated()
                 )
                 .formLogin(withDefaults())
