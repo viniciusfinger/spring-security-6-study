@@ -17,7 +17,7 @@ export class DashboardService {
   }
 
   getAccountTransactions(id: number){
-    return this.http.get(environment.rooturl + AppConstants.BALANCE_API_URL+ "?id="+id,{ observe: 'response',withCredentials: true });
+    return this.http.get(environment.rooturl + AppConstants.BALANCE_API_URL+ "/accounts/"+id,{ observe: 'response',withCredentials: true });
   }
 
   getLoansDetails(id: number){
