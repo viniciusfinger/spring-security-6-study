@@ -1,16 +1,24 @@
 package com.viniciusfinger.eazybank.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.viniciusfinger.eazybank.model.AccountTransaction;
+import com.viniciusfinger.eazybank.repository.AccountTransactionRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/balances")
 public class BalanceController {
 
+    private final AccountTransactionRepository accountTransactionRepository;
 
-    @GetMapping("/me")
-    public String getMyBalance(){
-        return "My balance mock";
+    public BalanceController(AccountTransactionRepository accountTransactionRepository){
+        this.accountTransactionRepository = accountTransactionRepository;
+    }
+
+    @GetMapping("/accounts/{id}")
+    public List<AccountTransaction> getMyBalance(@PathVariable Integer id){
+        return this.accountTransactionRepository.findByCustomerIdOrderByTransactionDtDesc(id);
     }
 }

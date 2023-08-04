@@ -31,7 +31,7 @@ public class SecurityConfig {
         http
                 .securityContext(securityContext -> securityContext.requireExplicitSave(false)) //autosave in Security context holder
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) //sempre criar o JSESSIONID
-                .cors(cors -> cors.configurationSource(request -> {
+                .cors(corsConfig -> corsConfig.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
                     config.setAllowedMethods(Arrays.asList("*"));
@@ -40,12 +40,10 @@ public class SecurityConfig {
                     config.setMaxAge(3600L); //24h
                     return config;
                 }))
-                .csrf(csrf -> {
-                    csrf
-                            .csrfTokenRequestHandler(csrfRequestHandler)
-                            .ignoringRequestMatchers("/contacts/**", "/auth/**") //ignore csrf protection for this public paths that contains PUT/POST methods
-                            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                })
+                .csrf(csrfConfig -> csrfConfig
+                        .csrfTokenRequestHandler(csrfRequestHandler)
+                        .ignoringRequestMatchers("/contacts/**", "/auth/**") //ignore csrf protection for this public paths that contains PUT/POST methods
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class) //adicionando o filtro que adiciona o cabeçalho do csrf token
                 .authorizeHttpRequests(requests ->
                 requests
