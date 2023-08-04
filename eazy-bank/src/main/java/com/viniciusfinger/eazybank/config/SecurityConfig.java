@@ -1,14 +1,13 @@
 package com.viniciusfinger.eazybank.config;
 
 import com.viniciusfinger.eazybank.filter.CsrfCookieFilter;
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,12 +15,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -34,6 +29,8 @@ public class SecurityConfig {
         csrfRequestHandler.setCsrfRequestAttributeName("_csrf");
 
         http
+                .securityContext(securityContext -> securityContext.requireExplicitSave(false)) //autosave in Security context holder
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) //sempre criar o JSESSIONID
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));

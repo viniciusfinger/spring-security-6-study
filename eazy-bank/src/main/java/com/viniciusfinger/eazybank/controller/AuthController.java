@@ -6,13 +6,12 @@ import com.viniciusfinger.eazybank.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -56,5 +55,17 @@ public class AuthController {
         }
 
         return response;
+    }
+
+    @GetMapping
+    public CustomerDTO getUserDetailsAfterLogin(Authentication authentication){
+        List<Customer> customerList = customerRepository.findByEmail(authentication.getName());
+
+        if (!customerList.isEmpty()){
+            return modelMapper.map(customerList.get(0), CustomerDTO.class);
+        }
+
+        return null;
+
     }
 }
