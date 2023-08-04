@@ -1,9 +1,11 @@
 package com.viniciusfinger.eazybank.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.viniciusfinger.eazybank.model.Authority;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 public class CustomerDTO {
@@ -17,6 +19,9 @@ public class CustomerDTO {
     private String pwd;
 
     private String role;
+
+    private Set<Authority> authorities;
+
     private Date createDt;
 
 }

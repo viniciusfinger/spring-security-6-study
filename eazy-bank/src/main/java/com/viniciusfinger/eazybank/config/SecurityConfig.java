@@ -47,8 +47,12 @@ public class SecurityConfig {
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class) //adicionando o filtro que adiciona o cabeçalho do csrf token
                 .authorizeHttpRequests(requests ->
                 requests
+                        .requestMatchers("/accounts/**").hasAuthority("VIEWACCOUNT") //hasAutority precisa de autenticação + aquela authority
+                        .requestMatchers("/balances/**").hasAnyAuthority("VIEWACCOUNT", "VIEWBALANCE")
+                        .requestMatchers("/loans/**").hasAuthority("VIEWLOANS")
+                        .requestMatchers("/cards/**").hasAuthority("VIEWCARDS")
                         .requestMatchers("/notices/**", "/contacts/**", "/auth").permitAll()
-                        .requestMatchers("/accounts/**", "/balances/**", "/loans/**", "/cards/**", "/users/**").authenticated()
+                        .requestMatchers("/users/**").authenticated() //não precisa ter uma authority especifica, apenas estar autenticado.
                 )
                 .formLogin(withDefaults())
                 .httpBasic(withDefaults());
