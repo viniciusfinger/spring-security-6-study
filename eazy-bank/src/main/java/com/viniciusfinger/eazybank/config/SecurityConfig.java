@@ -1,5 +1,6 @@
 package com.viniciusfinger.eazybank.config;
 
+import com.viniciusfinger.eazybank.filter.AuthoritiesLoggingFilter;
 import com.viniciusfinger.eazybank.filter.CsrfCookieFilter;
 
 import com.viniciusfinger.eazybank.filter.RequestValidationBeforeFilter;
@@ -46,7 +47,8 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/contacts/**", "/auth/**") //ignore csrf protection for this public paths that contains PUT/POST methods
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class) //adicionando o filtro que adiciona o cabeçalho do csrf token
-                .addFilterAfter(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(requests ->
                 requests
                         .requestMatchers("/accounts/**").hasAuthority("VIEWACCOUNT") //hasAutority precisa de autenticação + aquela authority
