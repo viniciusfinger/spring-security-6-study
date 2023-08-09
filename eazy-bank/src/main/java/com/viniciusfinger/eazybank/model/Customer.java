@@ -1,6 +1,7 @@
 package com.viniciusfinger.eazybank.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Customer {
 
     private String role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private Set<Authority> authorities;
 
