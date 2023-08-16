@@ -1,9 +1,6 @@
 package com.viniciusfinger.eazybank.config;
 
-import com.viniciusfinger.eazybank.filter.AuthoritiesLoggingFilter;
-import com.viniciusfinger.eazybank.filter.CsrfCookieFilter;
-import com.viniciusfinger.eazybank.filter.JwtTokenGenerationFilter;
-import com.viniciusfinger.eazybank.filter.RequestValidationBeforeFilter;
+import com.viniciusfinger.eazybank.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +47,7 @@ public class SecurityConfig {
                 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JwtTokenGenerationFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(requests ->
                 requests
                         .requestMatchers("/accounts/**").hasAuthority("VIEWACCOUNT") //hasAutority precisa de autenticação + aquela authority
